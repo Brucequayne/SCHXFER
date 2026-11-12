@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio</title>
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%231b1b1c'/%3E%3Crect x='3' y='3' width='10' height='10' fill='%23e4e2de'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="site-header" id="header">
+    <a class="brand" id="brand" href="#foto">Portfolio</a>
+    <nav class="nav" aria-label="Bereiche">
+      <a href="#foto" data-section="foto">Foto</a>
+      <a href="#video" data-section="video">Video</a>
+      <a href="#3d" data-section="3d">3D</a>
+      <a href="#sound" data-section="sound">Sound</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- FOTO -->
+    <section class="view" id="view-foto" data-section="foto" aria-label="Foto">
+      <div class="scroller overview" id="foto-overview">
+        <div class="tiles" id="tiles"></div>
+      </div>
+
+      <div class="scroller project" id="foto-project" hidden>
+        <figure class="cover-wrap">
+          <button class="cover-btn" type="button" aria-label="Titelbild groß ansehen">
+            <img class="cover" alt="">
+          </button>
+        </figure>
+        <div class="project-head">
+          <div class="project-text">
+            <h1 class="project-title"></h1>
+            <p class="project-desc"></p>
+          </div>
+          <span class="project-meta"></span>
+          <button class="back" type="button">Alle Projekte</button>
+        </div>
+        <div class="justified"></div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="view placeholder" id="view-video" data-section="video" aria-label="Video" hidden>
+      <div class="scroller">
+        <div class="placeholder-inner">
+          <h1>Video</h1>
+          <p>Hier erscheinen bald meine Videoarbeiten.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3D -->
+    <section class="view placeholder" id="view-3d" data-section="3d" aria-label="3D" hidden>
+      <div class="scroller">
+        <div class="placeholder-inner">
+          <h1>3D</h1>
+          <p>Animationen und Renderings folgen.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOUND -->
+    <section class="view placeholder" id="view-sound" data-section="sound" aria-label="Sound" hidden>
+      <div class="scroller">
+        <div class="placeholder-inner">
+          <h1>Sound</h1>
+          <p>Musik und Sounddesign folgen.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Großansicht -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Großansicht">
+    <img class="lb-img" alt="">
+    <button class="lb-btn lb-prev" type="button" aria-label="Vorheriges Foto"><span aria-hidden="true">‹</span></button>
+    <button class="lb-btn lb-next" type="button" aria-label="Nächstes Foto"><span aria-hidden="true">›</span></button>
+    <button class="lb-close" type="button">Schließen</button>
+    <span class="lb-count"></span>
+  </div>
+</body>
+</html>

@@ -1,0 +1,296 @@
+/* ------------------------------------------------------------
+   Farben & Grundwerte – hier zentral anpassbar
+   ------------------------------------------------------------ */
+:root {
+  --graphit: #1b1b1c;   /* Hintergrund */
+  --schiefer: #242425;  /* Platzhalter, während Bilder laden */
+  --asche: #3a3a3c;     /* Linien, Hover */
+  --nebel: #8c8c8f;     /* Nebentext */
+  --kreide: #e4e2de;    /* Haupttext */
+
+  --gap: 4px;           /* Abstand zwischen Fotos */
+  --header-h: 60px;
+
+  --font: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--graphit);
+  color: var(--kreide);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* Jeder Bereich scrollt in sich selbst */
+}
+
+img { display: block; max-width: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+[hidden] { display: none !important; }
+
+:focus-visible { outline: 2px solid var(--kreide); outline-offset: 2px; }
+
+/* ------------------------------------------------------------
+   Kopfzeile – blendet aus, wenn die Maus das obere Viertel verlässt
+   ------------------------------------------------------------ */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 24px;
+  background: rgba(27, 27, 28, .78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform .45s var(--ease-out), opacity .45s var(--ease-out);
+}
+.site-header.is-hidden { transform: translateY(-100%); opacity: 0; }
+
+.brand { font-size: 15px; font-weight: 500; letter-spacing: .01em; }
+
+.nav { display: flex; gap: 28px; font-size: 15px; }
+.nav a { color: var(--nebel); padding: 6px 0; transition: color .2s; }
+.nav a:hover { color: var(--kreide); }
+.nav a[aria-current="page"] {
+  color: var(--kreide);
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 1px;
+}
+
+/* ------------------------------------------------------------
+   Bereiche
+   ------------------------------------------------------------ */
+.view { position: fixed; inset: 0; }
+.scroller {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
+/* ------------------------------------------------------------
+   Foto – Übersicht (Kacheln)
+   ------------------------------------------------------------ */
+/* Kacheln beginnen ganz oben – die Kopfzeile legt sich halbtransparent darüber */
+.overview { padding-top: 0; }
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--gap);
+}
+
+.tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--schiefer);
+}
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter .5s var(--ease-out);
+}
+.tile-label {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 15px;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, .65), 0 0 2px rgba(0, 0, 0, .5);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .35s var(--ease-out), transform .35s var(--ease-out);
+}
+.tile-count { color: var(--kreide); opacity: .75; font-size: 13px; }
+
+.tiles:hover .tile img { filter: brightness(.62); }
+.tiles .tile:hover img, .tiles .tile:focus-visible img { filter: none; }
+.tile:hover .tile-label, .tile:focus-visible .tile-label { opacity: 1; transform: none; }
+.tile:focus-visible { outline-offset: -2px; }
+
+@media (hover: none) {
+  .tile-label { opacity: 1; transform: none; }
+  .tiles:hover .tile img { filter: none; }
+}
+
+.empty {
+  grid-column: 1 / -1;
+  max-width: 34em;
+  padding: 18vh 24px;
+  color: var(--nebel);
+}
+.empty strong { color: var(--kreide); font-weight: 500; }
+.empty code { color: var(--kreide); }
+
+/* ------------------------------------------------------------
+   Foto – geöffnetes Projekt
+   ------------------------------------------------------------ */
+.project { z-index: 2; }
+
+.cover-wrap {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  z-index: 3; /* Titelbild liegt über dem Stapel */
+}
+.cover-btn { display: block; cursor: zoom-in; }
+.cover { background: var(--schiefer); object-fit: cover; }
+
+.project-head {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding: 28px 24px 32px;
+}
+.project-text { flex: 1; min-width: 0; }
+.project-title {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 300;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+}
+.project-desc {
+  margin: 12px 0 0;
+  max-width: 38em;
+  color: var(--nebel);
+}
+.project-desc:empty { display: none; }
+.project-meta { color: var(--nebel); font-size: 14px; white-space: nowrap; }
+.back {
+  font-size: 14px;
+  white-space: nowrap;
+  padding: 8px 14px;
+  border: 1px solid var(--asche);
+  border-radius: 999px;
+  transition: border-color .2s, background .2s;
+}
+.back:hover { border-color: var(--nebel); background: var(--schiefer); }
+
+.project.is-entering .project-head { opacity: 0; }
+.project-head { transition: opacity .5s var(--ease-out); }
+
+.justified { position: relative; z-index: 1; }
+.ph {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  background: var(--schiefer);
+  cursor: zoom-in;
+  will-change: transform;
+}
+.ph img { width: 100%; height: 100%; object-fit: cover; }
+.ph:focus-visible { outline-offset: -2px; }
+
+/* Bild, das zwischen Kachel und Titelbild fliegt */
+.flyer {
+  position: fixed;
+  z-index: 30;
+  object-fit: cover;
+  background: var(--schiefer);
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  :root { --header-h: 52px; }
+  .site-header { padding: 0 16px; }
+  .nav { gap: 18px; }
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+  .project-head { flex-wrap: wrap; padding: 22px 16px 24px; gap: 12px 16px; }
+  .project-text { flex-basis: 100%; }
+}
+
+/* ------------------------------------------------------------
+   Platzhalter-Bereiche (Video, 3D, Sound)
+   ------------------------------------------------------------ */
+.placeholder-inner {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: calc(var(--header-h) + 24px) 24px 10vh;
+}
+.placeholder h1 {
+  margin: 0;
+  font-size: clamp(64px, 16vw, 220px);
+  font-weight: 300;
+  letter-spacing: -.045em;
+  line-height: .9;
+  color: var(--asche);
+}
+.placeholder p { margin: 20px 0 0 .3em; color: var(--nebel); }
+
+/* ------------------------------------------------------------
+   Großansicht
+   ------------------------------------------------------------ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(22, 22, 23, .97);
+  touch-action: none;
+}
+.lb-img {
+  position: absolute;
+  transform-origin: 0 0;
+  background: var(--schiefer);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.lb-btn {
+  position: absolute;
+  top: 50%;
+  width: 64px;
+  height: 120px;
+  margin-top: -60px;
+  font-size: 40px;
+  font-weight: 200;
+  color: var(--nebel);
+  transition: color .2s;
+}
+.lb-btn:hover { color: var(--kreide); }
+.lb-prev { left: 0; }
+.lb-next { right: 0; }
+.lb-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  padding: 8px 4px;
+  font-size: 14px;
+  color: var(--nebel);
+}
+.lb-close:hover { color: var(--kreide); }
+.lb-count {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+  font-size: 14px;
+  color: var(--nebel);
+  font-variant-numeric: tabular-nums;
+}
+@media (hover: none) { .lb-btn { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; }
+}
