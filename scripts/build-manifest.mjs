@@ -1,8 +1,8 @@
-// Liest den Ordner /fotos und erzeugt data/fotos.json für die Website.
+// Liest den Ordner /Fotografie und erzeugt data/fotos.json für die Website.
 // Läuft automatisch bei jedem Hochladen (GitHub Action). Keine Zusatzpakete nötig.
 //
 // Aufbau:
-//   fotos/
+//   Fotografie/
 //     01_Island/            ← ein Projekt (Zahl vorne = Reihenfolge, wird nicht angezeigt)
 //       00001.Title.jpg     ← Titelbild: „title“ irgendwo im Dateinamen
 //       00002.jpg           ← weitere Fotos, sortiert nach Dateiname
@@ -11,7 +11,9 @@
 import { readdir, readFile, writeFile, mkdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
-const ROOT = 'fotos';
+// Ordnername für die Fotos ("fotos" wird als Alternative auch erkannt)
+const ROOT_CANDIDATES = ['Fotografie', 'fotos'];
+let ROOT = ROOT_CANDIDATES[0];
 const OUT = 'data/fotos.json';
 const IMAGE = /\.(jpe?g|png|webp)$/i;
 const WARN_KB = 900;
@@ -143,9 +145,13 @@ async function readProject(folder) {
 
 async function main() {
   const projects = [];
+  for (const c of ROOT_CANDIDATES) { if (await exists(c)) { ROOT = c; break; } }
   if (await exists(ROOT)) {
     const entries = (await readdir(ROOT, { withFileTypes: true }))
-      .filter((e) => e.isDirectory() && !e.name.startsWith('.'))
+      .filter((e) => {
+        if (e.isFile() && !e.name.startsWith('.')) console.warn(`⚠ ${ROOT}/${e.name} ist eine Datei, kein Ordner – ignoriert`);
+        return e.isDirectory() && !e.name.startsWith('.');
+      })
       .map((e) => e.name)
       .sort(collator.compare);
 
@@ -161,7 +167,7 @@ async function main() {
       console.log(`✓ ${p.title}: ${p.photos.length + 1} Fotos`);
     }
   } else {
-    console.warn('⚠ Ordner „fotos“ fehlt – Fotobereich bleibt leer');
+    console.warn('⚠ Ordner „Fotografie“ fehlt – Fotobereich bleibt leer');
   }
 
   await mkdir('data', { recursive: true });

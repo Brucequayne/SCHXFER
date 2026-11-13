@@ -45,7 +45,7 @@ export function initPhotos({ data, lightbox, onBack }) {
   // ---------- Übersicht ----------
   if (!projects.length) {
     tilesEl.innerHTML = `<p class="empty"><strong>Noch keine Fotos.</strong><br>
-      Lege im Repo einen Ordner <code>fotos/Projektname/</code> an und lade deine Bilder hinein.
+      Lege im Repo einen Ordner <code>Fotografie/Projektname/</code> an und lade deine Bilder hinein.
       Das Titelbild bekommt „title“ im Dateinamen. Nach dem Hochladen erscheint das Projekt hier automatisch.</p>`;
   }
 

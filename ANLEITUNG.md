@@ -7,7 +7,7 @@
 
 ## Fotos hinzufügen
 ```
-fotos/
+Fotografie/
   01_Island/              ← Projektordner, Zahl vorne bestimmt die Reihenfolge
     00001.Title.jpg       ← Titelbild: „title“ irgendwo im Dateinamen
     00002.jpg             ← weitere Fotos, sortiert nach Dateiname
